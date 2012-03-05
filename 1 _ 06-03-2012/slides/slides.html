@@ -1,0 +1,157 @@
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Gudea:400,700,400italic' rel='stylesheet' type='text/css'>
+		<style>
+		
+			html, body { padding: 0px; margin: 0px; font-family: 'Gudea', cursive; }
+		
+			#canvascontainer {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				scroll: none;
+			}
+			#canvas { 
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				left: 0px; 
+				top: 0px;
+				
+				-webkit-transform-origin: 0px 0px;  /* move the origin to top-left */
+				-moz-transform-origin: 0px 0px;     /* move the origin to top-left */
+				-o-transform-origin: 0px 0px;     /* move the origin to top-left */
+				-ms-transform-origin: 0px 0px;     /* move the origin to top-left */
+				transform-origin: 0px 0px;     /* move the origin to top-left */
+			}
+			
+			.animations-enabled {
+				-webkit-transition: all 0.5s ease;
+				-moz-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				-ms-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			
+			#names { 
+				position: absolute; 
+				left: 700px;
+				top: 350px;
+			}
+			
+			#subs { 
+				margin: 20px; 
+				font-size: 30px; 
+				text-align: left;
+			}
+			#subs div {
+				padding: 10px;
+			}
+			#subs img {
+				height: 100px;
+				width: 100px;
+				margin: 20px;
+				vertical-align: middle;
+			}
+			
+		</style>
+		<script src='./js/jquery-1.7.1.min.js'></script>
+		<script src='./js/presentation.js'></script>
+		<script>
+		$(function() {
+			// Create presentation
+			var elements = [
+				{ element: "#logo" },
+				{ 
+					element: "#logo", 
+					onBeforeEnterFromPrev : function() { $("#names").fadeIn(); }, 
+					onBeforeLeaveToNext : function() { $("#names").fadeOut(); },
+					onBeforeEnterFromNext : function() { $("#names").fadeIn(); }, 
+					onBeforeLeaveToPrev : function() { $("#names").fadeOut(); } 					
+				},
+				{ element: "#html5" },
+				{ element: "#subs" },
+				{ element: "#semantics" },
+				{ element: "#offline" },
+				{ element: "#access" },
+				{ element: "#connectivity" },
+				{ element: "#multimedia" },
+				{ element: "#graphics" },
+				{ element: "#performance" },
+				{ element: "#css3" },
+			];
+			var presentation = new Presentation("#canvas", elements);
+			// Add event listeners on the document to move the presentation forward or backward
+			$(document).on("click", function() {
+				presentation.next();
+			});
+			$(document).on("keyup", function(e) {
+				if (e.which == 39) {
+					presentation.next();
+				} else if (e.which == 37) {
+					presentation.previous();
+				}
+			});
+			// Set animations enabled
+			$("#canvas").addClass("animations-enabled");
+		});
+		</script>
+	</head>
+	<body>
+		<div id='canvascontainer'>
+			<div id='canvas'>
+				<div id="html5" style=" width: 1000px; margin: 20px; left: 50%; margin-left: -500px; position: absolute; text-align: center;">
+					<div id="logo" style="margin: 250px; margin-top: 0px; margin-bottom: 0px;">
+						<img src='images/HTML5_Logo.svg'/>
+						<div id="names" style="display: none;">
+							<h1>Willem Mulder</h1><p>Leader new Languages, K51 (CSD)</p>
+							<h1>Peter Peerdeman</h1><p>HTML5 Lead, T31 (BIM)</p>
+						</div>
+					</div>
+					<div id="subs">
+						<div style="float: left;">
+							<div id="semantics">
+								<img src='images/HTML5_Semantics_512.png'/>
+								Semantics
+							</div>
+							<div id="offline">
+								<img src='images/HTML5_Offline_Storage_512.png'/>
+								Offline & Storage
+							</div>
+							<div id="access">
+								<img src='images/HTML5_Device_Access_512.png'/>
+								Device Access							
+							</div>
+							<div id="connectivity">
+								<img src='images/HTML5_Connectivity_512.png'/>
+								Connectivity
+							</div>
+						</div>
+						<div style="float: left;">
+							<div id="multimedia">
+								<img src='images/HTML5_Multimedia_512.png'/>
+								Multimedia
+							</div>
+							<div id="graphics">
+								<img src='images/HTML5_3D_Effects_512.png'/>
+								Graphics & 3D
+							</div>
+							<div id="performance">
+								<img src='images/HTML5_Performance_512.png'/>
+								Performance
+							</div>
+							<div id="css3">
+								<img src='images/HTML5_Styling_512.png'/>
+								CSS3
+							</div>
+						</div>
+						<div style="clear:both">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

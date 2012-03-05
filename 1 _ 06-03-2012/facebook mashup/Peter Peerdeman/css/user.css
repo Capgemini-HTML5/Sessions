@@ -1,0 +1,76 @@
+/* ===== Primary Styles ========================================================
+   Author: Willem Mulder
+   ========================================================================== */
+
+#wrapper { }
+
+#friends { padding: 10px; box-shadow: 0px 0px 10px #ccc; }
+
+#friends .imagewrapper { width: 100px; height: 80px; display: inline-block; }
+#friends img { 
+	width: 50px;
+	padding: 5px; 
+	box-shadow: 0px 0px 4px #ddd;
+	margin: auto;
+	vertical-align: middle;
+	-webkit-transition: all 0.1s ease;
+	-moz-transition: all 0.1s ease;
+	-o-transition: all 0.1s ease;
+	-ms-transition: all 0.1s esae;
+	transition: all 0.1s ease;
+}
+#friends div:hover .imagewrapper img { width: 60px; }
+
+/* spinnerrr */
+.spinner div {
+  width:20%;
+  height:40%;
+  background:#000;
+  position:absolute;
+  top:30%;
+  left:40%;
+}
+.spinner div.bar1 {
+  -moz-transform:rotate(0deg) translate(0, -40px);
+  -webkit-transform:rotate(0deg) translate(0, -40px);
+  opacity:0.12;
+}
+.spinner div.bar2 {
+  -moz-transform:rotate(120deg) translate(0, -40px);
+  -webkit-transform:rotate(120deg) translate(0, -40px);
+  opacity:0.25;
+}
+.spinner div.bar3 {
+  -moz-transform:rotate(240deg) translate(0, -40px);
+  -webkit-transform:rotate(240deg) translate(0, -40px);
+  opacity:0.37;
+}
+.spinner {
+	width: 100px; 
+	height: 100px;
+	position: relative;
+	-moz-animation-name: spinner;
+	-moz-animation-duration:1s;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-timing-function:linear;
+	-webkit-animation-name: spinner;
+	-webkit-animation-duration:5s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+}
+@-moz-keyframes spinner {
+  from {-moz-transform:scale(0.5) rotate(0deg);}
+  to {-moz-transform:scale(0.5) rotate(360deg);}
+} 
+@-webkit-keyframes spinner {
+  from {-webkit-transform:scale(0.5) rotate(0deg);}
+  to {-webkit-transform:scale(0.5) rotate(360deg);}
+} 
+
+/* =============================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+	/* Style adjustments for viewports that meet the condition */
+}

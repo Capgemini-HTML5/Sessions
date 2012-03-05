@@ -1,6 +1,9 @@
 /* ===== Primary Styles ========================================================
    Author: Willem Mulder
    ========================================================================== */
+body {
+	background: url('../img/pp-background-pattern.png') repeat
+}
 
 #wrapper { }
 

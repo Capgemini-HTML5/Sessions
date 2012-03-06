@@ -64,7 +64,7 @@
 } 
 @-webkit-keyframes spinner {
   from {-webkit-transform:scale(0.5) rotate(0deg);}
-  to {-webkit-transform:scale(0.5) rotate(360deg);}
+  to {-webkit-transform:scale(1) rotate(360deg);}
 } 
 
 /* =============================================================================

@@ -2,7 +2,9 @@
    Author: Willem Mulder
    ========================================================================== */
 body {
-	background: url('../img/pp-background-pattern.png') repeat
+	background-color: #d2d2d2;
+    background-image: -webkit-linear-gradient(-45deg, white 15%, transparent 0, transparent 50%, white 50%, white 65%, transparent 60%, transparent);
+    background-size:6px 6px;
 }
 
 #wrapper { }

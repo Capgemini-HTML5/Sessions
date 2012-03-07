@@ -43,8 +43,10 @@ function Presentation(canvas, elements) {
 			var baseTop = e.offset().top  - canvas.offset().top;
 		}					
 		// zoom so that the element fits on screen
-		var proportionalWidth = e.outerWidth() / canvas.outerWidth(); // e.g. 200/1000 = 0.2
-		var proportionalHeight = e.outerHeight() / canvas.outerHeight();
+		var canvasContainerWidth = canvas.outerWidth();
+		var canvasContainerHeight = canvas.outerHeight();
+		var proportionalWidth = e.outerWidth() / canvasContainerWidth; // e.g. 200/1000 = 0.2
+		var proportionalHeight = e.outerHeight() / canvasContainerHeight;
 		var scaleFactor = Math.max(proportionalWidth, proportionalHeight);
 		canvasZoomFactor = (1 / scaleFactor); // e.g. zoom to (1 / (0.2)) = 5
 		zoom(canvas, canvasZoomFactor);
@@ -54,12 +56,12 @@ function Presentation(canvas, elements) {
 		if (proportionalWidth > proportionalHeight) {
 			// Element will take full Width, leaving space at top and bottom
 			// Calculate rest-space
-			var rest = canvas.outerHeight() - e.outerHeight();
-			//newTop = (rest / 2 * canvasZoomFactor);
+			var openSpace = canvasContainerHeight - (e.outerHeight()*canvasZoomFactor);
+			newTop += (openSpace / 2 * canvasZoomFactor);
 		} else {
 			// Element will take full Height, leaving space left and right
-			var rest = canvas.outerWidth() - e.outerWidth();
-			newLeft += (rest / 2 * canvasZoomFactor);
+			var openSpace = canvasContainerWidth - (e.outerWidth()*canvasZoomFactor);
+			newLeft += (openSpace / 2 * canvasZoomFactor);
 		}
 		// If canvas is smaller than its container, then center the canvas in its parent
 		/*

@@ -1,0 +1,181 @@
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Gudea:400,700,400italic' rel='stylesheet' type='text/css'>
+		<style>
+		
+			html, body { padding: 0px; margin: 0px; font-family: 'Gudea', cursive; }
+		
+			#canvascontainer {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				scroll: none;
+			}
+			#canvas { 
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				left: 0px; 
+				top: 0px;
+				
+				-webkit-transform-origin: 0px 0px;  /* move the origin to top-left */
+				-moz-transform-origin: 0px 0px;     /* move the origin to top-left */
+				-o-transform-origin: 0px 0px;     /* move the origin to top-left */
+				-ms-transform-origin: 0px 0px;     /* move the origin to top-left */
+				transform-origin: 0px 0px;     /* move the origin to top-left */
+			}
+			
+			.animations-enabled {
+				-webkit-transition: all 0.5s ease;
+				-moz-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				-ms-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			
+			#names { 
+				position: absolute; 
+				left: 700px;
+				top: 350px;
+			}
+			
+			#subs { 
+				margin: 20px; 
+				font-size: 30px; 
+				text-align: left;
+			}
+			#subs div {
+				padding: 10px;
+			}
+			#subs img {
+				height: 100px;
+				width: 100px;
+				margin: 20px;
+				vertical-align: middle;
+			}
+			#subs p { padding-left: 100px; }
+			
+		</style>
+		<script src='./js/jquery-1.7.1.min.js'></script>
+		<script src='./js/presentation.js'></script>
+		<script>
+		$(function() {
+			// Create presentation
+			var elements = [
+				{ element: "#logo" },
+				{ 
+					element: "#logo", 
+					onBeforeEnterFromPrev : function() { $("#names").fadeIn(); }, 
+					onBeforeLeaveToNext : function() { $("#names").fadeOut(); },
+					onBeforeEnterFromNext : function() { $("#names").fadeIn(); }, 
+					onBeforeLeaveToPrev : function() { $("#names").fadeOut(); } 					
+				},
+				{ element: "#html5" },
+				{ element: "#details" },
+				{ element: "#code" },
+				{ element: "#challenges" },
+			];
+			var presentation = new Presentation("#canvas", elements);
+			// Add event listeners on the document to move the presentation forward or backward
+			$(document).on("click", function() {
+				presentation.next();
+			});
+			$(document).on("keyup", function(e) {
+				if (e.which == 39) {
+					presentation.next();
+				} else if (e.which == 37) {
+					presentation.previous();
+				}
+			});
+			// Set animations enabled
+			$("#canvas").addClass("animations-enabled");
+		});
+		</script>
+	</head>
+	<body>
+		<div id='canvascontainer'>
+			<div id='canvas'>
+				<div id="html5" style=" width: 1000px; margin: 20px; left: 50%; margin-left: -500px; position: absolute; text-align: center;">
+					<div id="logo" style="margin: 250px; margin-top: 0px; margin-bottom: 0px;">
+						<img src='images/HTML5_Logo.svg'/>
+						<div id="names" style="display: none;">
+							<h1>Willem Mulder</h1><p>Leader new Languages, K51 (CSD)</p>
+							<h1>Peter Peerdeman</h1><p>HTML5 Lead, T31 (BIM)</p>
+						</div>
+					</div>
+					<div id="subs">
+						<div id="details">
+							<div style="float: left;">
+								<div id="intro">
+									<h2>Practical intro</h2>
+									<p>In this first practical we will fork a facebook-mashup example from the github account and customize it. We have posed several challenges on different skill levels, please feel free to interpret these as you please and create something beautiful!</p>
+								</div>
+								<div id="prerequisits">
+									<h2>Prerequisites</h3>
+									<ul>
+										<li><a href="http://www.google.com/chrome">Install Chrome browser</a></li>
+										<li><a href="http://help.github.com/win-set-up-git/">Install and Setup Git</a></li>
+										<li><a href="https://github.com/Capgemini-HTML5/Sessions">Fork and git clone the Capgemini-HTML5 / Sessions repository</a></li>
+										<li>Copy the <a href="https://github.com/Capgemini-HTML5/Sessions/tree/master/1%20_%2006-03-2012/facebook%20mashup/Willem%20Mulder">Willem Mulder</a> folder to a "yourname" folder to have a personal playground</li>
+										<li><a href="http://notepad-plus-plus.org/">Install notepad++ (basic editor)</a> or <a href="http://aptana.com/">Aptana Studio (advanced editor)</a></li>
+									</ul>
+								</div>
+							</div>
+							
+							<div style="clear:both">
+							</div>
+						</div>
+						
+						<div id="code">
+							<div style="float: left;">
+								<div>
+									<h2>Facebook Mashup code</h2>
+									When <a href="http://help.github.com/fork-a-repo/">forked</a>, please take a look at <a href="https://github.com/Capgemini-HTML5/Sessions/tree/master/1%20_%2006-03-2012/facebook%20mashup/Willem%20Mulder">Willems version of the Mashup</a>
+									
+									<ul>
+										<li><a href="https://github.com/Capgemini-HTML5/Sessions/blob/master/1%20_%2006-03-2012/facebook%20mashup/Willem%20Mulder/index.html">index.html</a> - contains HTML5 markup code</li>
+										<li><a href="https://github.com/Capgemini-HTML5/Sessions/blob/master/1%20_%2006-03-2012/facebook%20mashup/Willem%20Mulder/css/user.css">css/user.css</a> - contains the custom CSS3 styling</li>
+										<li><a href="https://github.com/Capgemini-HTML5/Sessions/blob/master/1%20_%2006-03-2012/facebook%20mashup/Willem%20Mulder/js/script.js">js/script.js</a> - contains the custom Javascript code</li>
+									</ul>
+								</div>
+							</div>
+							
+							<div style="clear:both">
+							</div>
+						</div>
+						<div id="challenges">
+							<div style="float: left;">
+								<div>
+									<h2>Challenges</h2>
+									Beginner:
+									<ol>
+										<li>Customize the mashups HTML (e.g. add a couple of tags, change some text, ...)</li>
+										<li>Customize the spinner CSS (e.g. adjust the speed, change the transitions, ...)<p><small>See <a href="http://css3.bradshawenterprises.com/all/">http://css3.bradshawenterprises.com/all/</a> for an extensive CSS-transitions overview and example-code</small></p></li>
+										<li>Customize the Javascript (e.g. add a fade to the spinner loading, customize the rendered data html, ...)</li>
+									</ol>
+									Intermediate
+									<ol>
+										<li>Get your own access token on Facebook</li>
+										<li>Use your own access token to retrieve liked facebook pages instead of friends (hint: <a href="https://developers.facebook.com/docs/reference/api/page/">Facebook Graph documentation</a>)</li>
+										<li>Display Facebook pages in a visual manner (list, text, canvas, images, ...)</li>
+										<li>Push your commits back to a new folder (your own folder, next to Willem and Peters) the git repository</li>
+									</ol>
+									Expert:
+									<ol>
+										<li>Use HTML5 <a href="http://playground.html5rocks.com/#canvas_tag">canvas tag</a> to display the retrieved facebook data in an interesting way.</li>
+										<li>Use <a href="http://playground.html5rocks.com/#localstorage">local storage API</a> to store/cache the retrieved data and make the app work offline.</li>
+									</ol>
+								</div>
+							</div>
+							
+							<div style="clear:both">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

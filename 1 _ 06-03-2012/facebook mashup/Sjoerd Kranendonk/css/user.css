@@ -1,11 +1,6 @@
 /* ===== Primary Styles ========================================================
    Author: Willem Mulder
    ========================================================================== */
-body {
-	background-color: #d2d2d2;
-    background-image: -webkit-linear-gradient(-45deg, white 15%, transparent 0, transparent 50%, white 50%, white 65%, transparent 60%, transparent);
-    background-size:6px 6px;
-}
 
 #wrapper { }
 
@@ -59,7 +54,7 @@ body {
 	-moz-animation-iteration-count:infinite;
 	-moz-animation-timing-function:linear;
 	-webkit-animation-name: spinner;
-	-webkit-animation-duration:5s;
+	-webkit-animation-duration:1s;
 	-webkit-animation-iteration-count:infinite;
 	-webkit-animation-timing-function:linear;
 }
@@ -69,7 +64,7 @@ body {
 } 
 @-webkit-keyframes spinner {
   from {-webkit-transform:scale(0.5) rotate(0deg);}
-  to {-webkit-transform:scale(0.5) rotate(360deg);}
+  to {-webkit-transform:scale(1) rotate(360deg);}
 } 
 
 /* =============================================================================

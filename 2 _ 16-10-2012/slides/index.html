@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<!--
+  Google HTML5 slide template
+
+  Authors: Luke Mahé (code)
+           Marcin Wichary (code and design)
+           
+           Dominic Mazzoni (browser compatibility)
+           Charles Chen (ChromeVox support)
+
+  URL: http://code.google.com/p/html5slides/
+-->
+
+<html>
+    <head>
+        <title>Presentation</title>
+
+        <meta charset='utf-8'>
+        <script src='slides.js'></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
+    </head>
+    <body style='display: none'>
+
+        <section class='slides layout-regular template-default'>
+
+            <!-- Your slides (<article>s) go here. Delete or comment out the
+                 slides below. -->
+            <article>
+                <h1>
+                    HTML5 CoP Workshop
+                </h1>
+                <p>
+                    Matijs Moest, Willem Mulder, Peter Peerdeman
+                    <br>
+                    Oktober 16, 2012
+                </p>
+            </article>
+            <article>
+                <h3>Objectives</h3>
+                <p>We will explore the following HTML5 APIs:</p>
+                <ul>
+                    <li>WebSockets
+					<li>Notifications
+					
+                    <li>Geolocation
+                </ul>
+            </article>
+            <article>
+                <h3>Chat application</h3>
+
+                <table>
+                    <thead>
+                        <tr><th>Functionality</th><th>API</th><tr>
+                    </thead>
+                    <tr>
+                        <td>connect to chat server</td>
+                        <td>Websockets</td>
+                    </tr>
+                    <tr>
+                        <td>show a notification for new messages</td>
+                        <td>Notifications</td>
+                    </tr>
+					<tr>
+                        <td>fetch user location</td>
+                        <td>Geolocation</td>
+                    </tr>
+                </table> 
+            </article>
+             <article>
+                <h3>Agenda</h3>
+                <ul class="build">
+                    <li>Part 1<ul>
+                            <li>Websocket</li>
+                            <li>1 hour of development</li></ul>
+                    </li>
+					<li>
+						Discussion
+					</li>
+                    <li>Part 2<ul>
+                            <li>Notifications</li>
+                            <li>Geolocation</li>
+                            <li>1 hour of development</li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </article>
+			<article>
+                <a href="http://www.w3.org/TR/websockets/">http://www.w3.org/TR/websockets/</a>
+                <h2>WebSocket</h2>
+            </article>
+            <article class="smaller">
+                <h3>WebSocket</h3>
+                <pre>
+// create new socket
+var socket = new WebSocket('ws://127.0.0.1:1337');
+// event listeners
+socket.onopen = function(event) {console.log(event);};
+socket.onclose = function(event) {console.log(event);};
+socket.onmessage = function(event) {
+    console.log(event.data);
+};
+// send a message
+socket.send(textOrBinary);
+                </pre>
+            </article>
+			<article>
+				<h3>Start server</h3>
+				<br/>Download/install nodeJS <a href="http://nodejs.org/">http://nodejs.org/</a>
+				
+				<pre>
+node simplechatserver.js
+				</pre>
+				
+			</article>
+			<article class="countdown" data-duration="60:00"></article>
+            <article>
+                <a href="http://www.w3.org/TR/notifications/">http://www.w3.org/TR/notifications/</a>
+                <h2>Notifications</h2>
+            </article>
+            <article>
+                <h3>Notifications</h3>
+                Example                 <button onclick="var n = new Notification('hello world');
+                    n.onshow = function () {
+                        setTimeout(function () {
+                            n.close(); // close the notification.
+                        }, 3000); // after 3 seconds.
+                    };
+                    // show the notification
+                    n.show();">Try it</button>
+                <pre>
+var n = new Notification('hello world');
+n.onshow = function () {
+    setTimeout(function () {
+        n.close(); // close the notification.
+    }, 3000); // after 3 seconds.
+};
+// show the notification
+n.show();
+                </pre>
+            </article>
+            <article>
+                <a href="http://www.w3.org/TR/geolocation-API/">http://www.w3.org/TR/geolocation-API/</a>
+                <h2>Geolocation</h2>
+            </article>
+            <article class="smaller">
+                <p>Getting the users coordinates
+                <pre>
+navigator.geolocation.getCurrentPosition(function (pos) {
+    do_something(pos.coords.latitude, pos.coords.longitude);
+}, function (error) {
+    console.log(error)
+});
+                </pre>
+                <p>Getting the city with google maps api
+                    <br><button onclick="
+                        var next = this.nextElementSibling;
+                        navigator.geolocation.getCurrentPosition(function (pos) {
+                            var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+                            geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({
+                                latLng: latLng
+                            }, function (results, status) {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    console.log(results[1].formatted_address);
+                                    next.innerHTML = 'Location: ' + results[1].formatted_address;
+                                } else {
+                                    console.error('google.maps.Geocoder failed due to: ' + status);
+                                    next.innerHTML = 'Error: ' + status;
+                                }
+                            });
+                        });">Try it</button>&nbsp;<code>Location:</code></p>
+                <pre>
+navigator.geolocation.getCurrentPosition(function(pos) {
+    var latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+        geocoder = new google.maps.Geocoder();
+    
+    geocoder.geocode({latLng: latLng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            console.log(results[1].formatted_address);
+        } else {
+            console.error("google.maps.Geocoder failed due to: " + status);
+        }
+    });
+});</pre>
+
+<p>Tip</p>
+<pre>
+ connection.send(JSON.stringify(
+ {type:"profile", profile:{userName:msg, location : { lat : "12345", lang : "12345" }}}
+ ));
+</pre>
+            </article>
+			<article class="countdown" data-duration="60:00"></article>
+
+       
+            <article>
+                <h1>
+                    THE END
+                </h1>
+                <p>
+                    Questions ?
+                </p>
+				<p>
+                    Drinks!!!
+                </p>
+            </article>
+			
+		</section>
+    </body>
+</html>

@@ -75,46 +75,56 @@ wsServer.on('request', function(request) {
 
     console.log((new Date()) + ' Connection accepted.');
 
-    // TODO: only send on request
     // send back chat history
-    if (groups.global.history.length > 0) {
-        connection.sendUTF(JSON.stringify( { group: 'global', type: 'history', data: groups.global.history} ));
+    function sendHistory() {
+        if (groups.global.history.length > 0) {
+            connection.sendUTF(JSON.stringify( { group: 'global', type: 'history', data: groups.global.history} ));
+        }
     }
+    sendHistory();
 
     // user sent some message
     connection.on('message', function(message) {
-        if (message.type === 'utf8') { // accept only text
-            var json = JSON.parse(message.utf8Data);
-            if (json.type == "profile") {
-                if (json.profile) {
-                    // update profile
-                    console.log("updating profile for " + index + ":", json.profile);
-                    for(var key in json.profile) {
-                        clients[index].profile[key] = json.profile[key];
+        try {
+            if (message.type === 'utf8') { // accept only text
+                var json = JSON.parse(message.utf8Data);
+                if (json.type == "history") {
+                    sendHistory();
+                } else if (json.type == "profile") {
+                    if (json.profile) {
+                        // update profile
+                        console.log("updating profile for " + index + ":", json.profile);
+                        for(var key in json.profile) {
+                            clients[index].profile[key] = json.profile[key];
+                        }
                     }
-                }
-                if (json.client !== undefined) {
-                    // return profile info of client
-                    if (clients[json.client] && clients[json.client].profile) {
-                        var m = {type:"profile",client:json.client,time:new Date().getTime(),profile:clients[json.client].profile};
+                    if (json.client !== undefined) {
+                        // return profile info of client
+                        if (clients[json.client] && clients[json.client].profile) {
+                            var m = {type:"profile",client:json.client,time:new Date().getTime(),profile:clients[json.client].profile};
+                            connection.sendUTF(JSON.stringify(m));
+                        }
+                    } else {
+                        // return profile for currently connected client
+                        var m = {type:"yourprofile",client:index,time:new Date().getTime(),profile:clients[index].profile};
                         connection.sendUTF(JSON.stringify(m));
                     }
-                } else {
-                    // return profile for currently connected client
-                    var m = {type:"yourprofile",client:index,time:new Date().getTime(),profile:clients[index].profile};
-                    connection.sendUTF(JSON.stringify(m));
+                } else if (json.type == "message") {
+                    var m = {type:"message",client:index,time:new Date().getTime(),message:json.message};
+                    console.log((new Date()) + ' Received Message from ' + index);
+                    groups.global.history.push(m);
+                    groups.global.history.slice(-100); // Only store last 100 messages
+                    // broadcast message to all connected clients
+                    for (var i in clients) {
+                        // Only send to connected clients
+                        if (clients[i].connection) {
+                            clients[i].connection.sendUTF(JSON.stringify(m));
+                        }
+                    }
                 }
             }
-            if (json.type == "message") {
-                var m = {type:"message",client:index,time:new Date().getTime(),message:json.message};
-                console.log((new Date()) + ' Received Message from ' + index);
-                groups.global.history.push(m);
-                groups.global.history.slice(-100); // Only store last 100 messages
-                // broadcast message to all connected clients
-                for (var i in clients) {
-                    clients[i].connection.sendUTF(JSON.stringify(m));
-                }
-            }
+        } catch(e) {
+            console.log("something went wrong, but we're not giving up.");
         }
     });
 
@@ -122,10 +132,8 @@ wsServer.on('request', function(request) {
     connection.on('close', function(connection) {
         console.log((new Date()) + " Peer "
             + connection.remoteAddress + " disconnected.");
-        // remove user from the list of connected clients
-        delete clients[index];
-        // Remove from all groups
-        // TODO
+        // Indicate that this user is not connected anymore
+        delete clients[index].connection;
     });
 
 });

@@ -66,9 +66,9 @@ $(function () {
             for (var i=0; i < json.data.length; i++) {
                 var m = json.data[i];
                 var author = m.client;
-                var profile = profiles[author];
-                if (profile) {
-                    author = profile.userName;
+                var tprofile = profiles[author];
+                if (tprofile) {
+                    author = tprofile.userName;
                 } else {
                     // Fetch for next time
                     connection.send(JSON.stringify({type:"profile", client:author}));
@@ -81,9 +81,9 @@ $(function () {
             input.removeAttr('disabled').focus(); // let the user write another message
             // Check profile information for this user
             var author = json.client;
-            var profile = profiles[author];
-            if (profile) {
-                author = profile.userName;
+            var tprofile = profiles[author];
+            if (tprofile) {
+                author = tprofile.userName;
             } else {
                 // Fetch for next time
                 connection.send(JSON.stringify({type:"profile", client:author}));
@@ -97,6 +97,7 @@ $(function () {
             input.removeAttr('disabled').focus(); // let the user write another message
             var i = json.client;
             profiles[i] = json.profile;
+            profile = $.extend(json.profile, profile, { "client" : json.client } );
             status.text(json.profile.userName + ': ');
         } else {
             console.log('Hmm..., I\'ve never seen JSON like this: ', json);

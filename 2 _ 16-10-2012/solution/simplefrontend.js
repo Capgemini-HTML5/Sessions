@@ -14,6 +14,14 @@ $(function () {
     // if user is running mozilla then use it's built-in WebSocket
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
+    /**
+     * Helper function for escaping input strings
+     */
+    function htmlEntities(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     // if browser doesn't support WebSocket, just show some notification and exit
     if (!window.WebSocket) {
         content.html($('<p>', { text: 'Sorry, but your browser doesn\'t '
@@ -24,6 +32,7 @@ $(function () {
     }
 
     // open connection
+    //var connection = new WebSocket('ws://chatserver.eu01.aws.af.cm:1337/');
     var connection = new WebSocket('ws://fabricasapiens.nl:8080');
 
     connection.onopen = function () {
@@ -36,6 +45,7 @@ $(function () {
         // just in there were some problems with conenction...
         content.html($('<p>', { text: 'Sorry, but there\'s some problem with your '
                                     + 'connection or the server is down.</p>' } ));
+        console.log(error);
     };
 
     // most important part - incoming messages
@@ -56,9 +66,9 @@ $(function () {
             for (var i=0; i < json.data.length; i++) {
                 var m = json.data[i];
                 var author = m.client;
-                var tprofile = profiles[author];
-                if (tprofile) {
-                    author = tprofile.userName;
+                var profile = profiles[author];
+                if (profile) {
+                    author = profile.userName;
                 } else {
                     // Fetch for next time
                     connection.send(JSON.stringify({type:"profile", client:author}));
@@ -71,14 +81,13 @@ $(function () {
             input.removeAttr('disabled').focus(); // let the user write another message
             // Check profile information for this user
             var author = json.client;
-            var tprofile = profiles[author];
-            if (tprofile) {
-                author = tprofile.userName;
+            var profile = profiles[author];
+            if (profile) {
+                author = profile.userName;
             } else {
                 // Fetch for next time
                 connection.send(JSON.stringify({type:"profile", client:author}));
             }
-			
             addMessage(author, json.message.data, new Date(json.time));
         } else if (json.type === 'profile') { // it's profile information
             input.removeAttr('disabled').focus(); // let the user write another message
@@ -88,7 +97,6 @@ $(function () {
             input.removeAttr('disabled').focus(); // let the user write another message
             var i = json.client;
             profiles[i] = json.profile;
-			profile = $.extend(json.profile,profile, { "client" : json.client } );
             status.text(json.profile.userName + ': ');
         } else {
             console.log('Hmm..., I\'ve never seen JSON like this: ', json);
@@ -107,7 +115,7 @@ $(function () {
             // we know that the first message sent from a user is their name
             if (!profile.userName) {
                 profile.userName = msg;
-                connection.send(JSON.stringify({type:"profile", profile:{userName:msg, location : { lat : "12345", lang : "12345" }}}));
+                connection.send(JSON.stringify({type:"profile", profile:{userName:msg}}));
             } else {
                 // send the message as an ordinary text
                 connection.send(JSON.stringify({type:"message", message:{type:"text", data:msg}}));
@@ -139,6 +147,6 @@ $(function () {
         content.append('<p><span>' + author + '</span> @ ' +
              + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
              + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-             + ': ' + message + '</p>');
+             + ': ' + htmlEntities(message) + '</p>');
     }
 });

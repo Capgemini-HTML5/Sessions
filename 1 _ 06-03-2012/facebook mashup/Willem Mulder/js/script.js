@@ -5,7 +5,7 @@
 /* Config */
 // Access token
 // Generate one at https://developers.facebook.com/tools/explorer
-var accessToken = "AAACEdEose0cBAIqZC1cEFdlAoOmMRkz8m1xd42x3xZAkWCMcvQnnP5PMdT0gJzjAsaNsrBZAneU8xNv6ZAI9T1VD2oVL5aUFhCFDSTjoOwZDZD";
+var accessToken = "AAACEdEose0cBAHLhyyrMF5t0xPDzTYgiPv8n4NpTljx8wkWnWfP3ZCp1ZCupjTpUCDmUrBgsyhq40jiYBoQsZBtqC2mg7AZAayY3cHgt6wZDZD";
 
 // TODO: Check for auth errors and alert the user to get a new access token
 /*
